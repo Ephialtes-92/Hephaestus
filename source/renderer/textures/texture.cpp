@@ -3,7 +3,7 @@
 #include <stdexcept>
 
 std::filesystem::path textureDirectory =
-R"(C:\Users\ephia\source\repos\OpenGL_Renderer\OpenGL_Renderer\data\textures)";
+R"(C:\Users\ephia\source\repos\Hephaestus\data\textures)";
 
 Texture::Texture(std::string textureName)
 {
