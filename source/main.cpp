@@ -32,7 +32,7 @@ void renderLoop(Window& window);
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 
 std::filesystem::path shaderDirectory =
-R"(C:\Users\ephia\source\repos\OpenGL_Renderer\OpenGL_Renderer\shaders)";
+R"(C:\Users\ephia\source\repos\Hephaestus\shaders)";
 
 //Window
 void processInput(GLFWwindow* window);
@@ -166,6 +166,10 @@ void renderLoop(Window& window)
     Mesh rectangle(vertices, sizeof(vertices), indices, sizeof(indices));
     Mesh cube(vertices3d, sizeof(vertices3d));
 
+	//Light source cube
+    Mesh lightSource(vertices3d, sizeof(vertices3d));
+    glm::vec3 lightPos(1.2f, 1.0f, 2.0f);
+
     glm::mat4 viewMatrix = mainCamera.getViewMatrix();
     glm::mat4 projectionMatrix = glm::perspective(glm::radians(mainCamera.getFov()), 800.0f / 600.0f, 0.1f, 100.0f);
 
@@ -197,6 +201,15 @@ void renderLoop(Window& window)
         shaderDirectory / "vertexShaderforTexture.vert",
         shaderDirectory / "fragmentShaderforTexture.frag"
     );
+    Shader lightingShader(
+        shaderDirectory / "vertexShaderforLight.vert",
+        shaderDirectory / "fragmentShaderforLight.frag"
+    );
+	Shader lightSourceShader(
+		shaderDirectory / "vertexShaderforLightSource.vert",
+		shaderDirectory / "fragmentShaderforLightSource.frag"
+	);
+
 
     //Load the textures
     Texture containerTexture("container.jpg");
@@ -204,12 +217,11 @@ void renderLoop(Window& window)
 
     //Draw something
     //drawRectangle();
-    textureShader.use();
-    containerTexture.bind(0);
-    textureShader.setInt("texture0", 0);
-    faceTexture.bind(1);
-    textureShader.setInt("texture1", 1);
-
+    //textureShader.use();
+    //containerTexture.bind(0);
+    //textureShader.setInt("texture0", 0);
+    //faceTexture.bind(1);
+    //textureShader.setInt("texture1", 1);
 
     while (!window.shouldClose())
     {
@@ -226,23 +238,36 @@ void renderLoop(Window& window)
         glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
+        lightingShader.use();
+        lightingShader.setFloat3("lightColor", 1.0f, 1.0f, 1.0f);
+        lightingShader.setFloat3("objectColor", 1.0f, 0.5f, 0.31f);
+
         projectionMatrix = glm::perspective(glm::radians(mainCamera.getFov()), 800.0f / 600.0f, 0.1f, 100.0f);
-        textureShader.setMat4("projection", projectionMatrix);
+        lightingShader.setMat4("projection", projectionMatrix);
 
         viewMatrix = mainCamera.getViewMatrix();
-        textureShader.setMat4("view", viewMatrix);
+        lightingShader.setMat4("view", viewMatrix);
 
-        //Draw 10 cubes in various positions
-        for (int i = 0; i < 10; i++)
+        //Draw cubes in various positions
+        for (int i = 0; i < 4; i++)
         {
             glm::mat4 modelMatrix = glm::mat4(1.0f);
             modelMatrix = glm::translate(modelMatrix, cubePositions[i]);
             float angle = 20.0f * i;
             modelMatrix = glm::rotate(modelMatrix, glm::radians(angle), glm::vec3(1.0f, 0.3f, 0.5f));
-            textureShader.setMat4("model", modelMatrix);
+            lightingShader.setMat4("model", modelMatrix);
 
             cube.draw();
         }
+
+		glm::mat4 lightSourceModelMatrix = glm::mat4(1.0f);
+		lightSourceModelMatrix = glm::translate(lightSourceModelMatrix, lightPos);
+		lightSourceModelMatrix = glm::scale(lightSourceModelMatrix, glm::vec3(0.2f)); // Make it smaller than the cubes
+        lightSourceShader.use();
+        lightSourceShader.setMat4("model", lightSourceModelMatrix);
+        lightSourceShader.setMat4("view", viewMatrix);
+		lightSourceShader.setMat4("projection", projectionMatrix);
+		lightSource.draw();
 
         window.onUpdate();
     }
