@@ -1,0 +1,51 @@
+
+# =========================
+# CMake build output
+# =========================
+build/
+cmake-build-*/
+CMakeFiles/
+CMakeCache.txt
+cmake_install.cmake
+Makefile
+compile_commands.json
+
+# =========================
+# Visual Studio
+# =========================
+.vs/
+*.sln
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+*.VC.db
+*.VC.VC.opendb
+
+# Compiled binaries and intermediate files
+Debug/
+Release/
+x64/
+x86/
+out/
+*.obj
+*.o
+*.pch
+*.pdb
+*.ilk
+*.exe
+*.dll
+#*.lib
+*.exp
+
+# =========================
+# CMake user-specific settings
+# =========================
+CMakeUserPresets.json
+
+# =========================
+# Operating system files
+# =========================
+.DS_Store
+Thumbs.db
+Desktop.ini
