@@ -26,6 +26,41 @@ public:
 
 	//Setters/Getters
 	float getFov() { return m_Fov; }
+	void setFov(float fov)
+	{
+		m_Fov = fov;
+		if (m_Fov < 1.0f)
+			m_Fov = 1.0f;
+		if (m_Fov > 45.0f)
+			m_Fov = 45.0f;
+	}
+
+	float getSpeed() { return m_Speed; }
+	void setSpeed(float speed) { m_Speed = speed; }
+
+	float getZoomSpeed() { return m_ZoomSpeed; }
+	void setZoomSpeed(float zoomSpeed) { m_ZoomSpeed = zoomSpeed; }
+
+	float getSensitivity() { return m_Sensitivity; }
+	void setSensitivity(float sensitivity) { m_Sensitivity = sensitivity; }
+
+	float getYaw() { return m_Yaw; }
+	void setYaw(float yaw) { m_Yaw = yaw; }
+
+	float getPitch() { return m_Pitch; }
+	void setPitch(float pitch)
+	{
+		m_Pitch = pitch;
+		if (m_Pitch > 89.0f)
+			m_Pitch = 89.0f;
+		if (m_Pitch < -89.0f)
+			m_Pitch = -89.0f;
+	}
+
+	glm::vec3 getPosition() { return m_Position; }
+	glm::vec3 getFront() { return m_Front; }
+	glm::vec3 getUp() { return m_Up; }
+
 private:
 	//vectors
 	glm::vec3 m_Position;
