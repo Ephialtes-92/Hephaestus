@@ -75,7 +75,7 @@ private:
 	//Settings
 	float m_Speed = 6.0f;
 	float m_ZoomSpeed = 2.0f;
-	float m_Fov = 45.0f;
+	float m_Fov = 70.0f;
 	float m_Sensitivity = 0.1f;
 	//Needed to calculate the offset for movement
 	//We can get these magic numbers from the window resolution???

@@ -12,8 +12,11 @@ uniform vec3 viewPos;
 
 void main()
 {
-    float ambientStrength = 0.1;
+    //Parameters for lighting calculations
+    float ambientStrength = 0.25;
     float specularStrength = 0.5;
+    int shininess = 64;
+
     vec3 ambient = ambientStrength * lightColor;
     vec3 norm = normalize(Normal);
 
@@ -25,7 +28,7 @@ void main()
     // Specular shading
     vec3 viewDir = normalize(viewPos - FragPos);
     vec3 reflectDir = reflect(-lightDir, norm);
-    float spec = pow(max(dot(viewDir, reflectDir), 0.0), 32);
+    float spec = pow(max(dot(viewDir, reflectDir), 0.0), shininess);
     vec3 specular = specularStrength * spec * lightColor;  
 
     

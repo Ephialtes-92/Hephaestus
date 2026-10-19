@@ -166,7 +166,7 @@ void renderLoop(Window& window)
 
 	//Light source cube
     Mesh lightSource(vertices3d, sizeof(vertices3d));
-    glm::vec3 lightPos(1.2f, 1.0f, 2.0f);
+    glm::vec3 lightPos(3.0f, 1.0f, 0.0f);
 
     glm::mat4 viewMatrix = mainCamera.getViewMatrix();
     glm::mat4 projectionMatrix = glm::perspective(glm::radians(mainCamera.getFov()), 800.0f / 600.0f, 0.1f, 100.0f);
@@ -236,12 +236,13 @@ void renderLoop(Window& window)
         lightingShader.setMat4("projection", projectionMatrix);
 
         viewMatrix = mainCamera.getViewMatrix();
+        lightPos = glm::vec3(3.0f * sin(glfwGetTime()), 1.0f * cos(glfwGetTime()), 1.0f * cos(glfwGetTime()));
         lightingShader.setMat4("view", viewMatrix);
 		lightingShader.setVec3("lightPos", lightPos);
         lightingShader.setVec3("viewPos", mainCamera.getPosition());
 
         //Draw cubes in various positions
-        for (int i = 0; i < 10; i++)
+        for (int i = 0; i < 1; i++)
         {
             glm::mat4 modelMatrix = glm::mat4(1.0f);
             modelMatrix = glm::translate(modelMatrix, cubePositions[i]);
