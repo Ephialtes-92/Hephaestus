@@ -65,6 +65,7 @@ void Camera::processMouseMovement(double xpos, double ypos)
     direction.y = sin(glm::radians(m_Pitch));
     direction.z = sin(glm::radians(m_Yaw)) * cos(glm::radians(m_Pitch));
     m_Front = glm::normalize(direction);
+	m_Right = glm::normalize(glm::cross(m_Front, m_Up));
 }
 
 void Camera::handleZoom(double xoffset, double yoffset)
