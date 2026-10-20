@@ -115,6 +115,14 @@ void Shader::setInt(const std::string& name, int i)
     glUniform1i(uniformLocation, i);
 }
 
+void Shader::setFloat(const std::string& name, float f) const
+{
+    int uniformLocation = glGetUniformLocation(m_ProgramID, name.c_str());
+    // not found is -1 add a check here)
+    //also check that the shader is properly initialized
+    glUniform1f(uniformLocation, f);
+}
+
 void Shader::setFloat3(const std::string& name, float x, float y, float z) const
 {
     int uniformLocation = glGetUniformLocation(m_ProgramID, name.c_str());

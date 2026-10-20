@@ -166,7 +166,7 @@ void renderLoop(Window& window)
 
 	//Light source cube
     Mesh lightSource(vertices3d, sizeof(vertices3d));
-    glm::vec3 lightPos(3.0f, 1.0f, 0.0f);
+    glm::vec3 lightPos(3.0f, 0.0f, 0.0f);
 
     glm::mat4 viewMatrix = mainCamera.getViewMatrix();
     glm::mat4 projectionMatrix = glm::perspective(glm::radians(mainCamera.getFov()), 800.0f / 600.0f, 0.1f, 100.0f);
@@ -229,16 +229,35 @@ void renderLoop(Window& window)
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
         lightingShader.use();
-        lightingShader.setFloat3("lightColor", 1.0f, 1.0f, 1.0f);
         lightingShader.setFloat3("objectColor", 1.0f, 0.5f, 0.31f);
+
+		//Material properties
+        lightingShader.setFloat3("material.ambient", 1.0f, 0.5f, 0.31f);
+        lightingShader.setFloat3("material.diffuse", 1.0f, 0.5f, 0.31f);
+        lightingShader.setFloat3("material.specular", 0.5f, 0.5f, 0.5f);
+        lightingShader.setFloat("material.shininess", 32.0f);
+
+		//Light properties
+        glm::vec3 lightColor;
+        lightColor.x = sin(glfwGetTime() * 2.0f);
+        lightColor.y = sin(glfwGetTime() * 0.7f);
+        lightColor.z = sin(glfwGetTime() * 1.3f);
+
+        glm::vec3 diffuseColor = lightColor * glm::vec3(0.8f);
+        glm::vec3 ambientColor = diffuseColor * glm::vec3(0.5f);
+
+        lightingShader.setVec3("lightColor", lightColor);
+        lightingShader.setVec3("light.ambient", ambientColor);
+        lightingShader.setVec3("light.diffuse", diffuseColor);
+        lightingShader.setVec3("light.specular", glm::vec3(1.0f));
 
         projectionMatrix = glm::perspective(glm::radians(mainCamera.getFov()), 800.0f / 600.0f, 0.1f, 100.0f);
         lightingShader.setMat4("projection", projectionMatrix);
 
         viewMatrix = mainCamera.getViewMatrix();
-        lightPos = glm::vec3(3.0f * sin(glfwGetTime()), 1.0f * cos(glfwGetTime()), 1.0f * cos(glfwGetTime()));
+        //lightPos = glm::vec3(3.0f * sin(glfwGetTime()), 1.0f * cos(glfwGetTime()), 1.0f * cos(glfwGetTime()));
         lightingShader.setMat4("view", viewMatrix);
-		lightingShader.setVec3("lightPos", lightPos);
+		lightingShader.setVec3("light.position", lightPos);
         lightingShader.setVec3("viewPos", mainCamera.getPosition());
 
         //Draw cubes in various positions
@@ -253,6 +272,7 @@ void renderLoop(Window& window)
             cube.draw();
         }
 
+		//Draw the light source cube
 		glm::mat4 lightSourceModelMatrix = glm::mat4(1.0f);
 		lightSourceModelMatrix = glm::translate(lightSourceModelMatrix, lightPos);
 		lightSourceModelMatrix = glm::scale(lightSourceModelMatrix, glm::vec3(0.2f)); // Make it smaller than the cubes
@@ -260,6 +280,7 @@ void renderLoop(Window& window)
         lightSourceShader.setMat4("model", lightSourceModelMatrix);
         lightSourceShader.setMat4("view", viewMatrix);
 		lightSourceShader.setMat4("projection", projectionMatrix);
+		lightSourceShader.setVec3("lightColor", lightColor);
 		lightSource.draw();
 
         window.onUpdate();
