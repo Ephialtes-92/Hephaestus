@@ -250,12 +250,18 @@ float vertices3d[] = {
         //lightColor.y = sin(glfwGetTime() * 0.7f);
         //lightColor.z = sin(glfwGetTime() * 1.3f);
         glm::vec3 diffuseColor = lightColor * glm::vec3(0.8f);
-        glm::vec3 ambientColor = diffuseColor * glm::vec3(0.5f);
+        glm::vec3 ambientColor = diffuseColor * glm::vec3(0.2f);
 
         lightingShader.setVec3("lightColor", lightColor);
+        //hardcode light direction for directional light
+        //lightingShader.setFloat3("light.direction", -0.2f, -1.0f, -0.3f);
         lightingShader.setVec3("light.ambient", ambientColor);
         lightingShader.setVec3("light.diffuse", diffuseColor);
         lightingShader.setVec3("light.specular", glm::vec3(1.0f));
+        lightingShader.setFloat("light.constant", 1.0f);
+        lightingShader.setFloat("light.linear", 0.09f);
+        lightingShader.setFloat("light.quadratic", 0.032f);
+
 
         projectionMatrix = glm::perspective(glm::radians(mainCamera.getFov()), 800.0f / 600.0f, 0.1f, 100.0f);
         lightingShader.setMat4("projection", projectionMatrix);
@@ -267,7 +273,7 @@ float vertices3d[] = {
         lightingShader.setVec3("viewPos", mainCamera.getPosition());
 
         //Draw cubes in various positions
-        for (int i = 0; i < 1; i++)
+        for (int i = 0; i < 10; i++)
         {
             glm::mat4 modelMatrix = glm::mat4(1.0f);
             modelMatrix = glm::translate(modelMatrix, cubePositions[i]);
