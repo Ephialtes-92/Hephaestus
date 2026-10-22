@@ -1,9 +1,9 @@
 #include <renderer/textures/texture.h>
 #include <ThirdParty/stb/stb_image.h>
 #include <stdexcept>
+#include <config.h>
 
-std::filesystem::path textureDirectory =
-R"(C:\Users\ephia\source\repos\Hephaestus\data\textures)";
+std::filesystem::path textureDirectory = TEXTURES_DIR;
 
 Texture::Texture(std::string textureName)
 {

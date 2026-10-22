@@ -1,0 +1,10 @@
+#pragma once
+
+#include <filesystem>
+
+// These paths are configured at build time by CMake
+// They are relative to the executable location
+
+constexpr std::string_view SHADERS_DIR = "@SHADERS_DIR@";
+constexpr std::string_view TEXTURES_DIR = "@TEXTURES_DIR@";
+

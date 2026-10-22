@@ -14,6 +14,10 @@ set(INCLUDE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/include")
 set(THIRDPARTY_DIR "${INCLUDE_DIR}/ThirdParty")
 set(LIBRARY_DIR "${CMAKE_CURRENT_SOURCE_DIR}/libraries")
 
+# Asset directories (relative to source root)
+set(SHADERS_DIR "${CMAKE_CURRENT_SOURCE_DIR}/shaders")
+set(TEXTURES_DIR "${CMAKE_CURRENT_SOURCE_DIR}/data/textures")
+
 # Automatically discover C/C++ source files.
 file(GLOB_RECURSE PROJECT_SOURCES
     CONFIGURE_DEPENDS
@@ -29,6 +33,12 @@ file(GLOB_RECURSE PROJECT_HEADERS
     "${INCLUDE_DIR}/*.inl"
 )
 
+# Configure the config header file with asset directories
+configure_file(
+    "${INCLUDE_DIR}/config.h.in"
+    "${CMAKE_BINARY_DIR}/config.h"
+)
+
 # Create the application.
 add_executable(Hephaestus
     ${PROJECT_SOURCES}
@@ -39,6 +49,7 @@ add_executable(Hephaestus
 target_include_directories(Hephaestus PRIVATE
     "${INCLUDE_DIR}"
     "${THIRDPARTY_DIR}"
+    "${CMAKE_BINARY_DIR}"
 )
 
 # OpenGL.

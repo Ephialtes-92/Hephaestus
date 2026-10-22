@@ -12,6 +12,7 @@
 #include <renderer/textures/texture.h>
 #include <renderer/geometry/mesh.h>
 #include <filesystem>
+#include <config.h>
 
 //Math stuff
 #include <ThirdParty/glm/glm.hpp>
@@ -30,8 +31,7 @@ void scroll_callback(GLFWwindow* window, double xoffset, double yoffset);
 void renderLoop(Window& window);
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 
-std::filesystem::path shaderDirectory =
-R"(C:\Users\ephia\source\repos\Hephaestus\shaders)";
+std::filesystem::path shaderDirectory = SHADERS_DIR;
 
 //Window
 void processInput(GLFWwindow* window);
@@ -212,7 +212,7 @@ float vertices3d[] = {
 
 
     //Load the textures
-    
+    //Careful to construc/load textures first and then bind them to their corresponding units
     Texture metallicContainer("container2.png");
     Texture metallicContainer_specular("container2_specular.png");
 
