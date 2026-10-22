@@ -156,6 +156,21 @@ float vertices3d[] = {
         glm::vec3(-1.3f,  1.0f, -1.5f)
     };
 
+    glm::vec3 pointLightPositions[] = {
+        glm::vec3(0.7f,  0.2f,  2.0f),
+        glm::vec3(2.3f, -3.3f, -4.0f),
+        glm::vec3(-4.0f,  2.0f, -12.0f),
+        glm::vec3(0.0f,  0.0f, -3.0f)
+    };
+
+	glm::vec3 lightColors[] = {
+		glm::vec3(1.0f, 0.0f, 0.0f),
+		glm::vec3(0.0f, 1.0f, 0.0f),
+		glm::vec3(0.0f, 0.0f, 1.0f),
+		glm::vec3(0.2f, 0.8f, 0.65f)
+	};
+
+
     //Now we can define the triangles that make the rectange
     //Without having to store duplicate vertices
     const unsigned int indices[] = {  // note that we start from 0!
@@ -249,18 +264,73 @@ float vertices3d[] = {
         //lightColor.x = sin(glfwGetTime() * 2.0f);
         //lightColor.y = sin(glfwGetTime() * 0.7f);
         //lightColor.z = sin(glfwGetTime() * 1.3f);
-        glm::vec3 diffuseColor = lightColor * glm::vec3(0.8f);
-        glm::vec3 ambientColor = diffuseColor * glm::vec3(0.2f);
+        glm::vec3 diffuseColor[] = {
+            lightColors[0] * glm::vec3(0.8f),
+            lightColors[1] * glm::vec3(0.8f),
+            lightColors[2] * glm::vec3(0.8f),
+			lightColors[3] * glm::vec3(0.8f)
+        };
+
+        glm::vec3 ambientColor[] = {
+            diffuseColor[0] * glm::vec3(0.0f),
+            diffuseColor[1] * glm::vec3(0.0f),
+            diffuseColor[2] * glm::vec3(0.0f),
+			diffuseColor[3] * glm::vec3(0.0f)
+        };
 
         lightingShader.setVec3("lightColor", lightColor);
+
         //hardcode light direction for directional light
-        //lightingShader.setFloat3("light.direction", -0.2f, -1.0f, -0.3f);
-        lightingShader.setVec3("light.ambient", ambientColor);
-        lightingShader.setVec3("light.diffuse", diffuseColor);
-        lightingShader.setVec3("light.specular", glm::vec3(1.0f));
-        lightingShader.setFloat("light.constant", 1.0f);
-        lightingShader.setFloat("light.linear", 0.09f);
-        lightingShader.setFloat("light.quadratic", 0.032f);
+        lightingShader.setFloat3("directionalLight.direction", -0.2f, -1.0f, -0.3f);
+        lightingShader.setVec3("directionalLight.ambient", glm::vec3(0.0f));
+        lightingShader.setVec3("directionalLight.diffuse", glm::vec3(1.0f));
+        lightingShader.setVec3("directionalLight.specular", glm::vec3(1.0f));
+
+
+		//Point light properties
+		lightingShader.setVec3("pointLights[0].position", pointLightPositions[0]);
+        lightingShader.setVec3("pointLights[0].ambient", ambientColor[0]);
+        lightingShader.setVec3("pointLights[0].diffuse", diffuseColor[0]);
+        lightingShader.setVec3("pointLights[0].specular", glm::vec3(1.0f));
+        lightingShader.setFloat("pointLights[0].constant", 1.0f);
+        lightingShader.setFloat("pointLights[0].linear", 0.09f);
+        lightingShader.setFloat("pointLights[0].quadratic", 0.032f);
+
+        lightingShader.setVec3("pointLights[1].position", pointLightPositions[1]);
+        lightingShader.setVec3("pointLights[1].ambient", ambientColor[1]);
+        lightingShader.setVec3("pointLights[1].diffuse", diffuseColor[1]);
+        lightingShader.setVec3("pointLights[1].specular", glm::vec3(1.0f));
+        lightingShader.setFloat("pointLights[1].constant", 1.0f);
+        lightingShader.setFloat("pointLights[1].linear", 0.09f);
+        lightingShader.setFloat("pointLights[1].quadratic", 0.032f);
+
+        lightingShader.setVec3("pointLights[2].position", pointLightPositions[2]);
+        lightingShader.setVec3("pointLights[2].ambient", ambientColor[2]);
+        lightingShader.setVec3("pointLights[2].diffuse", diffuseColor[2]);
+        lightingShader.setVec3("pointLights[2].specular", glm::vec3(1.0f));
+        lightingShader.setFloat("pointLights[2].constant", 1.0f);
+        lightingShader.setFloat("pointLights[2].linear", 0.09f);
+        lightingShader.setFloat("pointLights[2].quadratic", 0.032f);
+
+        lightingShader.setVec3("pointLights[3].position", pointLightPositions[3]);
+        lightingShader.setVec3("pointLights[3].ambient", ambientColor[3]);
+        lightingShader.setVec3("pointLights[3].diffuse", diffuseColor[3]);
+        lightingShader.setVec3("pointLights[3].specular", glm::vec3(1.0f));
+        lightingShader.setFloat("pointLights[3].constant", 1.0f);
+        lightingShader.setFloat("pointLights[3].linear", 0.09f);
+        lightingShader.setFloat("pointLights[3].quadratic", 0.032f);
+
+		//Spotlight properties
+		lightingShader.setVec3("spotLight.position", mainCamera.getPosition());
+		lightingShader.setVec3("spotLight.direction", mainCamera.getFront());
+		lightingShader.setFloat("spotLight.cutOff", glm::cos(glm::radians(12.5f)));
+		lightingShader.setFloat("spotLight.outerCutOff", glm::cos(glm::radians(17.5f)));
+        lightingShader.setFloat3("spotLight.ambient", 0.0f, 0.0f, 0.0f);
+        lightingShader.setFloat3("spotLight.diffuse", 1.0f, 1.0f, 1.0f);
+        lightingShader.setFloat3("spotLight.specular", 1.0f, 1.0f, 1.0f);
+        lightingShader.setFloat("spotLight.constant", 1.0f);
+        lightingShader.setFloat("spotLight.linear", 0.09f);
+        lightingShader.setFloat("spotLight.quadratic", 0.017f);
 
 
         projectionMatrix = glm::perspective(glm::radians(mainCamera.getFov()), 800.0f / 600.0f, 0.1f, 100.0f);
@@ -269,7 +339,6 @@ float vertices3d[] = {
         viewMatrix = mainCamera.getViewMatrix();
         //lightPos = glm::vec3(3.0f * sin(glfwGetTime()), 1.0f * cos(glfwGetTime()), 1.0f * cos(glfwGetTime()));
         lightingShader.setMat4("view", viewMatrix);
-		lightingShader.setVec3("light.position", lightPos);
         lightingShader.setVec3("viewPos", mainCamera.getPosition());
 
         //Draw cubes in various positions
@@ -284,16 +353,20 @@ float vertices3d[] = {
             cube.draw();
         }
 
-		//Draw the light source cube
-		glm::mat4 lightSourceModelMatrix = glm::mat4(1.0f);
-		lightSourceModelMatrix = glm::translate(lightSourceModelMatrix, lightPos);
-		lightSourceModelMatrix = glm::scale(lightSourceModelMatrix, glm::vec3(0.2f)); // Make it smaller than the cubes
-        lightSourceShader.use();
-        lightSourceShader.setMat4("model", lightSourceModelMatrix);
-        lightSourceShader.setMat4("view", viewMatrix);
-		lightSourceShader.setMat4("projection", projectionMatrix);
-		lightSourceShader.setVec3("lightColor", lightColor);
-		lightSource.draw();
+		//Draw the light source cubes
+		for (int i = 0; i < 3; i++)
+		{
+			glm::mat4 lightSourceModelMatrix = glm::mat4(1.0f);
+			lightSourceModelMatrix = glm::translate(lightSourceModelMatrix, pointLightPositions[i]);
+			lightSourceModelMatrix = glm::scale(lightSourceModelMatrix, glm::vec3(0.2f)); // Make it smaller than the cubes
+			lightSourceShader.use();
+			lightSourceShader.setMat4("model", lightSourceModelMatrix);
+			lightSourceShader.setMat4("view", viewMatrix);
+			lightSourceShader.setMat4("projection", projectionMatrix);
+			lightSourceShader.setVec3("lightColor", lightColors[i]);
+
+			lightSource.draw();
+		}
 
         window.onUpdate();
     }

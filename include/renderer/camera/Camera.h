@@ -68,7 +68,7 @@ private:
 	glm::vec3 m_Up;
 	glm::vec3 m_Right;
 	glm::vec3 m_Target;
-	glm::vec3 m_ViewMatrix;
+	//glm::vec3 m_ViewMatrix;
 	//Euler angles
 	float m_Yaw = -90.0f;
 	float m_Pitch = 0.0f;
