@@ -12,10 +12,10 @@
 
 class Window;
 
-class MainScene : public IScene
+class CubeScene : public IScene
 {
 public:
-    explicit MainScene(Window& window);
+    explicit CubeScene(Window& window);
 
     void Load() override;
     void Update(float deltaTime) override;

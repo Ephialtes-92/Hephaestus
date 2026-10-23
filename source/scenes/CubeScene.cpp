@@ -1,6 +1,6 @@
 #include <ThirdParty/glad/glad.h>
 
-#include <scenes/MainScene.h>
+#include <scenes/CubeScene.h>
 
 #include <filesystem>
 
@@ -19,12 +19,12 @@ namespace
     std::filesystem::path shaderDirectory = SHADERS_DIR;
 }
 
-MainScene::MainScene(Window& window):
+CubeScene::CubeScene(Window& window):
     m_Window(window)
 {
 }
 
-void MainScene::Load()
+void CubeScene::Load()
 {
     float vertices3d[] = {
         -0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  0.0f, 0.0f,
@@ -93,7 +93,7 @@ void MainScene::Load()
     m_LightingShader->setInt("material.specular", 1);
 }
 
-void MainScene::Update(float deltaTime)
+void CubeScene::Update(float deltaTime)
 {
     m_DeltaTime = deltaTime;
 
@@ -103,7 +103,7 @@ void MainScene::Update(float deltaTime)
         ProcessMovementInput();
 }
 
-void MainScene::Render()
+void CubeScene::Render()
 {
     ImGui_ImplOpenGL3_NewFrame();
     ImGui_ImplGlfw_NewFrame();
@@ -228,7 +228,7 @@ void MainScene::Render()
     ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 }
 
-void MainScene::Unload()
+void CubeScene::Unload()
 {
     m_MetallicContainerSpecular.reset();
     m_MetallicContainer.reset();
@@ -238,7 +238,7 @@ void MainScene::Unload()
     m_Cube.reset();
 }
 
-void MainScene::HandleKey(GLFWwindow* window, int key, int action)
+void CubeScene::HandleKey(GLFWwindow* window, int key, int action)
 {
     if (key == GLFW_KEY_F1 && action == GLFW_RELEASE)
     {
@@ -259,7 +259,7 @@ void MainScene::HandleKey(GLFWwindow* window, int key, int action)
     }
 }
 
-void MainScene::HandleMouseMove(double xpos, double ypos)
+void CubeScene::HandleMouseMove(double xpos, double ypos)
 {
     if (m_UiInteractionMode)
         return;
@@ -267,7 +267,7 @@ void MainScene::HandleMouseMove(double xpos, double ypos)
     m_MainCamera.processMouseMovement(xpos, ypos);
 }
 
-void MainScene::HandleScroll(double xoffset, double yoffset)
+void CubeScene::HandleScroll(double xoffset, double yoffset)
 {
     if (m_UiInteractionMode)
         return;
@@ -275,13 +275,13 @@ void MainScene::HandleScroll(double xoffset, double yoffset)
     m_MainCamera.handleZoom(xoffset, yoffset);
 }
 
-void MainScene::HandleResize(int width, int height)
+void CubeScene::HandleResize(int width, int height)
 {
     m_ResolutionX = static_cast<float>(width);
     m_ResolutionY = static_cast<float>(height);
 }
 
-void MainScene::ProcessMovementInput()
+void CubeScene::ProcessMovementInput()
 {
     if (glfwGetKey(m_Window.getWindow(), GLFW_KEY_W) == GLFW_PRESS)
         m_MainCamera.move(CameraMovement::FORWARD, m_DeltaTime);

@@ -15,7 +15,7 @@
 #include <memory>
 
 #include <scenes/IScene.h>
-#include <scenes/MainScene.h>
+#include <scenes/CubeScene.h>
 #include <scenes/SceneManager.h>
 
 //Forward declarations
@@ -71,9 +71,9 @@ int main()
     ImGui_ImplOpenGL3_Init("#version 460");
 
     SceneManager sceneManager;
-    auto mainScene = std::make_unique<MainScene>(window);
-    activeScene = mainScene.get();
-    sceneManager.ChangeScene(std::move(mainScene));
+    auto cubeScene = std::make_unique<CubeScene>(window);
+    activeScene = cubeScene.get();
+    sceneManager.ChangeScene(std::move(cubeScene));
 
     float lastFrame = 0.0f;
 
