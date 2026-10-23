@@ -7,6 +7,10 @@
 #include <ThirdParty/GLFW/glfw3.h>
 #include <ThirdParty/glad/glad.h>
 
+#include <imgui.h>
+#include <backends/imgui_impl_glfw.h>
+#include <backends/imgui_impl_opengl3.h>
+
 #include <renderer/window/window.h>
 #include <renderer/shaders/shader.h>
 #include <renderer/textures/texture.h>
@@ -23,6 +27,7 @@
 
 //DEBUG
 bool wireframeMode = false;
+bool uiInteractionMode = false;
 
 //Forward declarations
 void glfwKeyCallback(GLFWwindow* window, int key, int scancode, int action, int mods);
@@ -81,8 +86,18 @@ int main()
     //Register GLFW callbacks
     glfwSetFramebufferSizeCallback(window.getWindow(), framebuffer_size_callback);
 
+    IMGUI_CHECKVERSION();
+    ImGui::CreateContext();
+    ImGui::StyleColorsDark();
+    ImGui_ImplGlfw_InitForOpenGL(window.getWindow(), true);
+    ImGui_ImplOpenGL3_Init("#version 460");
+
     //Simple Render Loop
     renderLoop(window);
+
+    ImGui_ImplOpenGL3_Shutdown();
+    ImGui_ImplGlfw_Shutdown();
+    ImGui::DestroyContext();
 
     return 0;
 
@@ -90,6 +105,8 @@ int main()
 
 void renderLoop(Window& window)
 {
+    bool showImGuiDemoWindow = false;
+
     //An Element Buffer Object (EBO) is a buffer that OpenGL uses to decide what vertices to draw
     //This lets store only the unique vertices of an object we want to draw
     const float vertices[] = {
@@ -244,6 +261,10 @@ float vertices3d[] = {
 
     while (!window.shouldClose())
     {
+        ImGui_ImplOpenGL3_NewFrame();
+        ImGui_ImplGlfw_NewFrame();
+        ImGui::NewFrame();
+
         //Frame times
         float currentFrame = glfwGetTime();
         deltaTime = currentFrame - lastFrame;
@@ -251,7 +272,9 @@ float vertices3d[] = {
 
         //Input
         window.processInput();
-        processInput(window.getWindow());
+        const ImGuiIO& io = ImGui::GetIO();
+        if (!uiInteractionMode && !io.WantCaptureKeyboard)
+            processInput(window.getWindow());
 
         //Render commands here
         glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
@@ -371,6 +394,21 @@ float vertices3d[] = {
 			lightSource.draw();
 		}
 
+        ImGui::Begin("Hephaestus");
+        ImGui::Text("FPS: %.1f", io.Framerate);
+        ImGui::Text("Press F1 to toggle UI interaction mode");
+        ImGui::Text("UI mode: %s", uiInteractionMode ? "ON" : "OFF");
+        if (ImGui::Checkbox("Wireframe", &wireframeMode))
+            glPolygonMode(GL_FRONT_AND_BACK, wireframeMode ? GL_LINE : GL_FILL);
+        ImGui::Checkbox("Show ImGui demo", &showImGuiDemoWindow);
+        ImGui::End();
+
+        if (showImGuiDemoWindow)
+            ImGui::ShowDemoWindow(&showImGuiDemoWindow);
+
+        ImGui::Render();
+        ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+
         window.onUpdate();
     }
 }
@@ -382,6 +420,18 @@ void framebuffer_size_callback(GLFWwindow* window, int width, int height)
 
 void glfwKeyCallback(GLFWwindow* window, int key, int scancode, int action, int mods)
 {
+    if (key == GLFW_KEY_F1 && action == GLFW_RELEASE)
+    {
+        uiInteractionMode = !uiInteractionMode;
+        glfwSetInputMode(window, GLFW_CURSOR, uiInteractionMode ? GLFW_CURSOR_NORMAL : GLFW_CURSOR_DISABLED);
+        if (!uiInteractionMode)
+            mainCamera.resetMouseCapture();
+        return;
+    }
+
+    if (ImGui::GetCurrentContext() != nullptr && ImGui::GetIO().WantCaptureKeyboard)
+        return;
+
     if (key == GLFW_KEY_TAB && action == GLFW_RELEASE)
     {
         if (!wireframeMode)
@@ -400,17 +450,22 @@ void glfwKeyCallback(GLFWwindow* window, int key, int scancode, int action, int 
 
 void mouse_callback(GLFWwindow* window, double xpos, double ypos)
 {
+    if (uiInteractionMode)
+        return;
+
     mainCamera.processMouseMovement(xpos, ypos);
 }
 
 void scroll_callback(GLFWwindow* window, double xoffset, double yoffset)
 {
+    if (uiInteractionMode)
+        return;
+
     mainCamera.handleZoom(xoffset, yoffset);
 }
 
 void processInput(GLFWwindow* window)
 {
-    const float cameraSpeed = 6.0f * deltaTime; // adjust accordingly
     if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
     {
         mainCamera.move(CameraMovement::FORWARD, deltaTime);
@@ -427,4 +482,5 @@ void processInput(GLFWwindow* window)
     {
         mainCamera.move(CameraMovement::RIGHT, deltaTime);
     }
+
 }

@@ -3,6 +3,8 @@ cmake_minimum_required(VERSION 3.23)
 
 project(Hephaestus LANGUAGES C CXX)
 
+include(FetchContent)
+
 # C++ standard
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
@@ -55,8 +57,36 @@ target_include_directories(Hephaestus PRIVATE
 # OpenGL.
 find_package(OpenGL REQUIRED)
 
+FetchContent_Declare(
+    imgui
+    GIT_REPOSITORY https://github.com/ocornut/imgui.git
+    GIT_TAG v1.91.9b
+)
+FetchContent_MakeAvailable(imgui)
+
+add_library(imgui STATIC
+    ${imgui_SOURCE_DIR}/imgui.cpp
+    ${imgui_SOURCE_DIR}/imgui_draw.cpp
+    ${imgui_SOURCE_DIR}/imgui_tables.cpp
+    ${imgui_SOURCE_DIR}/imgui_widgets.cpp
+    ${imgui_SOURCE_DIR}/imgui_demo.cpp
+    ${imgui_SOURCE_DIR}/backends/imgui_impl_glfw.cpp
+    ${imgui_SOURCE_DIR}/backends/imgui_impl_opengl3.cpp
+)
+
+target_include_directories(imgui PUBLIC
+    ${imgui_SOURCE_DIR}
+    ${imgui_SOURCE_DIR}/backends
+    ${THIRDPARTY_DIR}
+)
+
+target_compile_definitions(imgui PRIVATE
+    IMGUI_IMPL_OPENGL_LOADER_GLAD
+)
+
 target_link_libraries(Hephaestus PRIVATE
     OpenGL::GL
+    imgui
     "${LIBRARY_DIR}/glfw3.lib"
 )
 

@@ -77,3 +77,8 @@ void Camera::handleZoom(double xoffset, double yoffset)
         m_Fov = 45.0f;
 
 }
+
+void Camera::resetMouseCapture()
+{
+    m_FirstMouse = true;
+}

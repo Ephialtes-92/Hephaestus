@@ -23,6 +23,7 @@ public:
 	void move(CameraMovement direction, float deltaTime);
 	void processMouseMovement(double xpos, double ypos);
 	void handleZoom(double xoffset, double yoffset);
+	void resetMouseCapture();
 
 	//Setters/Getters
 	float getFov() { return m_Fov; }
