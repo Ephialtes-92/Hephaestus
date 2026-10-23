@@ -39,6 +39,9 @@ void processInput(GLFWwindow* window);
 float deltaTime = 0.0f;	// Time between current frame and last frame
 float lastFrame = 0.0f; // Time of last frame
 
+float resolutionX = 1920.0f;
+float resolutionY = 1080.0f;
+
 //Camera 
 Camera mainCamera;
 
@@ -55,7 +58,7 @@ int main()
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 6);
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
-    Window window(800, 600, "OpenGL Renderer");
+    Window window(resolutionX, resolutionY, "OpenGL Renderer");
 
     //Key callbacks
     glfwSetKeyCallback(window.getWindow(), glfwKeyCallback);
@@ -70,7 +73,7 @@ int main()
     }
 
     //Define the viewport
-    glViewport(0, 0, 800, 600);
+    glViewport(0, 0, resolutionX, resolutionY);
 
     //Enable depth testing
     glEnable(GL_DEPTH_TEST);
@@ -186,7 +189,7 @@ float vertices3d[] = {
     glm::vec3 lightPos(3.0f, 0.0f, 0.0f);
 
     glm::mat4 viewMatrix = mainCamera.getViewMatrix();
-    glm::mat4 projectionMatrix = glm::perspective(glm::radians(mainCamera.getFov()), 800.0f / 600.0f, 0.1f, 100.0f);
+    glm::mat4 projectionMatrix = glm::perspective(glm::radians(mainCamera.getFov()), resolutionX / resolutionY, 0.1f, 100.0f);
 
     Shader baseShader(
         shaderDirectory / "vertexShader.vert",
@@ -333,7 +336,7 @@ float vertices3d[] = {
         lightingShader.setFloat("spotLight.quadratic", 0.017f);
 
 
-        projectionMatrix = glm::perspective(glm::radians(mainCamera.getFov()), 800.0f / 600.0f, 0.1f, 100.0f);
+        projectionMatrix = glm::perspective(glm::radians(mainCamera.getFov()), resolutionX / resolutionY, 0.1f, 100.0f);
         lightingShader.setMat4("projection", projectionMatrix);
 
         viewMatrix = mainCamera.getViewMatrix();
