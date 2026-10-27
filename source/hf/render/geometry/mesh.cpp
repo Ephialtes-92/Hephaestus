@@ -1,5 +1,7 @@
-#include <renderer/geometry/mesh.h>
+#include <hf/render/geometry/mesh.h>
 
+namespace hf::render
+{
 Mesh::Mesh(const float* vertices, GLsizeiptr vertexBufferSize, const unsigned int* indices, GLsizeiptr indexBufferSize)
 {
 	//First we create a VAO --> Vertex Array Object
@@ -59,4 +61,6 @@ void Mesh::draw()
 	{
 		glDrawArrays(GL_TRIANGLES, 0, 36);
 	}
+}
+
 }

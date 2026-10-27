@@ -1,5 +1,7 @@
-#include <renderer/camera/Camera.h>
+#include <hf/render/camera/Camera.h>
 
+namespace hf::render
+{
 Camera::Camera(glm::vec3 position, glm::vec3 front, glm::vec3 up)
 	:m_Position(position),
 	m_Front(front),
@@ -81,4 +83,5 @@ void Camera::handleZoom(double xoffset, double yoffset)
 void Camera::resetMouseCapture()
 {
     m_FirstMouse = true;
+}
 }

@@ -4,18 +4,23 @@
 
 #include <ThirdParty/glm/glm.hpp>
 
-#include <renderer/camera/Camera.h>
-#include <renderer/geometry/mesh.h>
-#include <renderer/shaders/shader.h>
-#include <renderer/textures/texture.h>
-#include <scenes/IScene.h>
+#include <hf/render/camera/Camera.h>
+#include <hf/render/geometry/mesh.h>
+#include <hf/render/shaders/shader.h>
+#include <hf/render/textures/texture.h>
+#include <hf/scene/IScene.h>
 
+namespace hf::render
+{
 class Window;
+}
 
+namespace hf::scene
+{
 class CubeScene : public IScene
 {
 public:
-    explicit CubeScene(Window& window);
+    explicit CubeScene(render::Window& window);
 
     void Load() override;
     void Update(float deltaTime) override;
@@ -30,7 +35,7 @@ public:
 private:
     void ProcessMovementInput();
 
-    Window& m_Window;
+    render::Window& m_Window;
     bool m_WireframeMode = false;
     bool m_UiInteractionMode = false;
     bool m_ShowImGuiDemoWindow = false;
@@ -38,14 +43,14 @@ private:
     float m_ResolutionX = 1920.0f;
     float m_ResolutionY = 1080.0f;
 
-    Camera m_MainCamera;
+    render::Camera m_MainCamera;
 
-    std::unique_ptr<Mesh> m_Cube;
-    std::unique_ptr<Mesh> m_LightSource;
-    std::unique_ptr<Texture> m_MetallicContainer;
-    std::unique_ptr<Texture> m_MetallicContainerSpecular;
-    std::unique_ptr<Shader> m_LightingShader;
-    std::unique_ptr<Shader> m_LightSourceShader;
+    std::unique_ptr<render::Mesh> m_Cube;
+    std::unique_ptr<render::Mesh> m_LightSource;
+    std::unique_ptr<render::Texture> m_MetallicContainer;
+    std::unique_ptr<render::Texture> m_MetallicContainerSpecular;
+    std::unique_ptr<render::Shader> m_LightingShader;
+    std::unique_ptr<render::Shader> m_LightSourceShader;
 
     glm::vec3 m_CubePositions[10] = {
         glm::vec3(0.0f,  0.0f,  0.0f),
@@ -74,3 +79,4 @@ private:
         glm::vec3(0.2f, 0.8f, 0.65f)
     };
 };
+}

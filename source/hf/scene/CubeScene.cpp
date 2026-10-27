@@ -1,6 +1,6 @@
 #include <ThirdParty/glad/glad.h>
 
-#include <scenes/CubeScene.h>
+#include <hf/scene/CubeScene.h>
 
 #include <filesystem>
 
@@ -8,7 +8,7 @@
 
 #include <ThirdParty/glm/gtc/matrix_transform.hpp>
 
-#include <renderer/window/window.h>
+#include <hf/render/window/window.h>
 
 #include <imgui.h>
 #include <backends/imgui_impl_glfw.h>
@@ -19,7 +19,10 @@ namespace
     std::filesystem::path shaderDirectory = SHADERS_DIR;
 }
 
-CubeScene::CubeScene(Window& window):
+namespace hf::scene
+{
+
+CubeScene::CubeScene(render::Window& window):
     m_Window(window)
 {
 }
@@ -70,20 +73,20 @@ void CubeScene::Load()
         -0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f,  0.0f, 1.0f
     };
 
-    m_Cube = std::make_unique<Mesh>(vertices3d, sizeof(vertices3d));
-    m_LightSource = std::make_unique<Mesh>(vertices3d, sizeof(vertices3d));
+    m_Cube = std::make_unique<render::Mesh>(vertices3d, sizeof(vertices3d));
+    m_LightSource = std::make_unique<render::Mesh>(vertices3d, sizeof(vertices3d));
 
-    m_LightingShader = std::make_unique<Shader>(
+    m_LightingShader = std::make_unique<render::Shader>(
         shaderDirectory / "vertexShaderforLight.vert",
         shaderDirectory / "fragmentShaderforLight.frag"
     );
-    m_LightSourceShader = std::make_unique<Shader>(
+    m_LightSourceShader = std::make_unique<render::Shader>(
         shaderDirectory / "vertexShaderforLightSource.vert",
         shaderDirectory / "fragmentShaderforLightSource.frag"
     );
 
-    m_MetallicContainer = std::make_unique<Texture>("container2.png");
-    m_MetallicContainerSpecular = std::make_unique<Texture>("container2_specular.png");
+    m_MetallicContainer = std::make_unique<render::Texture>("container2.png");
+    m_MetallicContainerSpecular = std::make_unique<render::Texture>("container2_specular.png");
 
     m_MetallicContainer->bind(0);
     m_MetallicContainerSpecular->bind(1);
@@ -284,14 +287,16 @@ void CubeScene::HandleResize(int width, int height)
 void CubeScene::ProcessMovementInput()
 {
     if (glfwGetKey(m_Window.getWindow(), GLFW_KEY_W) == GLFW_PRESS)
-        m_MainCamera.move(CameraMovement::FORWARD, m_DeltaTime);
+        m_MainCamera.move(render::CameraMovement::FORWARD, m_DeltaTime);
 
     if (glfwGetKey(m_Window.getWindow(), GLFW_KEY_S) == GLFW_PRESS)
-        m_MainCamera.move(CameraMovement::BACKWARD, m_DeltaTime);
+        m_MainCamera.move(render::CameraMovement::BACKWARD, m_DeltaTime);
 
     if (glfwGetKey(m_Window.getWindow(), GLFW_KEY_A) == GLFW_PRESS)
-        m_MainCamera.move(CameraMovement::LEFT, m_DeltaTime);
+        m_MainCamera.move(render::CameraMovement::LEFT, m_DeltaTime);
 
     if (glfwGetKey(m_Window.getWindow(), GLFW_KEY_D) == GLFW_PRESS)
-        m_MainCamera.move(CameraMovement::RIGHT, m_DeltaTime);
+        m_MainCamera.move(render::CameraMovement::RIGHT, m_DeltaTime);
+}
+
 }

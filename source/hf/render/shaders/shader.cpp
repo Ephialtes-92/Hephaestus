@@ -2,7 +2,7 @@
 #include <sstream>
 #include <iostream>
 
-#include <renderer/shaders/shader.h>
+#include <hf/render/shaders/shader.h>
 #include <ThirdParty/glad/glad.h>
 #include <filesystem>
 #include <ios>
@@ -10,6 +10,8 @@
 #include <ThirdParty/glm/fwd.hpp>
 #include <ThirdParty/glm/gtc/type_ptr.hpp>
 
+namespace hf::render
+{
 //Read content and compile shaders
 Shader::Shader(const std::filesystem::path& vertexPath, const std::filesystem::path& fragmentPath)
 {
@@ -153,4 +155,5 @@ void Shader::setMat4(const std::string& name, const glm::mat4& matrix) const
     // not found is -1 add a check here)
     //also check that the shader is properly initialized
     glUniformMatrix4fv(uniformLocation, 1, GL_FALSE, glm::value_ptr(matrix));
+}
 }

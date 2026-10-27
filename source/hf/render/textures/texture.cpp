@@ -1,8 +1,10 @@
-#include <renderer/textures/texture.h>
+#include <hf/render/textures/texture.h>
 #include <ThirdParty/stb/stb_image.h>
 #include <stdexcept>
 #include <config.h>
 
+namespace hf::render
+{
 std::filesystem::path textureDirectory = TEXTURES_DIR;
 
 Texture::Texture(std::string textureName)
@@ -81,4 +83,6 @@ Texture& Texture::operator=(Texture&& other) noexcept
     }
 
     return *this;
+}
+
 }

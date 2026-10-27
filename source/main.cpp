@@ -11,12 +11,12 @@
 #include <backends/imgui_impl_glfw.h>
 #include <backends/imgui_impl_opengl3.h>
 
-#include <renderer/window/window.h>
+#include <hf/render/window/window.h>
 #include <memory>
 
-#include <scenes/IScene.h>
-#include <scenes/CubeScene.h>
-#include <scenes/SceneManager.h>
+#include <hf/scene/IScene.h>
+#include <hf/scene/CubeScene.h>
+#include <hf/scene/SceneManager.h>
 
 //Forward declarations
 void glfwKeyCallback(GLFWwindow* window, int key, int scancode, int action, int mods);
@@ -27,7 +27,7 @@ void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 float resolutionX = 1920.0f;
 float resolutionY = 1080.0f;
 
-IScene* activeScene = nullptr;
+hf::scene::IScene* activeScene = nullptr;
 
 
 int main()
@@ -41,7 +41,7 @@ int main()
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 6);
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
-    Window window(resolutionX, resolutionY, "OpenGL Renderer");
+    hf::render::Window window(resolutionX, resolutionY, "OpenGL Renderer");
 
     //Key callbacks
     glfwSetKeyCallback(window.getWindow(), glfwKeyCallback);
@@ -70,8 +70,8 @@ int main()
     ImGui_ImplGlfw_InitForOpenGL(window.getWindow(), true);
     ImGui_ImplOpenGL3_Init("#version 460");
 
-    SceneManager sceneManager;
-    auto cubeScene = std::make_unique<CubeScene>(window);
+    hf::scene::SceneManager sceneManager;
+    auto cubeScene = std::make_unique<hf::scene::CubeScene>(window);
     activeScene = cubeScene.get();
     sceneManager.ChangeScene(std::move(cubeScene));
 

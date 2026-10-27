@@ -2,6 +2,8 @@
 
 struct GLFWwindow;
 
+namespace hf::scene
+{
 class IScene
 {
 public:
@@ -17,3 +19,4 @@ public:
     virtual void HandleScroll(double xoffset, double yoffset) {}
     virtual void HandleResize(int width, int height) {}
 };
+}

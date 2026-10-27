@@ -1,6 +1,8 @@
-#include <renderer/window/window.h>
+#include <hf/render/window/window.h>
 #include <iostream>
 
+namespace hf::render
+{
 Window::Window(int width, int height, std::string title):
 	m_Width(width),
 	m_Height(height),
@@ -47,5 +49,6 @@ void Window::onUpdate()
 bool Window::shouldClose()
 {
 	return glfwWindowShouldClose(m_Window);
+}
 }
 

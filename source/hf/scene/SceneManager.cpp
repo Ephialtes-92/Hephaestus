@@ -1,4 +1,7 @@
-#include <scenes/SceneManager.h>
+#include <hf/scene/SceneManager.h>
+
+namespace hf::scene
+{
 
 void SceneManager::ChangeScene(std::unique_ptr<IScene> nextScene)
 {
@@ -34,4 +37,6 @@ void SceneManager::UnloadCurrent()
 IScene* SceneManager::GetCurrentScene() const
 {
     return m_CurrentScene.get();
+}
+
 }

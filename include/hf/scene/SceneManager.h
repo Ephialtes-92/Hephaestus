@@ -2,8 +2,10 @@
 
 #include <memory>
 
-#include <scenes/IScene.h>
+#include <hf/scene/IScene.h>
 
+namespace hf::scene
+{
 class SceneManager
 {
 public:
@@ -16,3 +18,4 @@ public:
 private:
     std::unique_ptr<IScene> m_CurrentScene;
 };
+}
