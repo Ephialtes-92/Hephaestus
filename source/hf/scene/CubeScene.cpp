@@ -3,6 +3,8 @@
 #include <hf/scene/CubeScene.h>
 
 #include <filesystem>
+#include <utility>
+#include <vector>
 
 #include <config.h>
 
@@ -29,52 +31,160 @@ CubeScene::CubeScene(render::Window& window):
 
 void CubeScene::Load()
 {
-    float vertices3d[] = {
-        -0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  0.0f, 0.0f,
-         0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  1.0f, 0.0f,
-         0.5f,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  1.0f, 1.0f,
-         0.5f,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  1.0f, 1.0f,
-        -0.5f,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  0.0f, 1.0f,
-        -0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  0.0f, 0.0f,
+    std::vector<float> vertices3d = {
+        //position
+        -0.5f, -0.5f, -0.5f,
+         0.5f, -0.5f, -0.5f,
+         0.5f,  0.5f, -0.5f,
+         0.5f,  0.5f, -0.5f,
+        -0.5f,  0.5f, -0.5f,
+        -0.5f, -0.5f, -0.5f,
 
-        -0.5f, -0.5f,  0.5f,  0.0f,  0.0f, 1.0f,   0.0f, 0.0f,
-         0.5f, -0.5f,  0.5f,  0.0f,  0.0f, 1.0f,   1.0f, 0.0f,
-         0.5f,  0.5f,  0.5f,  0.0f,  0.0f, 1.0f,   1.0f, 1.0f,
-         0.5f,  0.5f,  0.5f,  0.0f,  0.0f, 1.0f,   1.0f, 1.0f,
-        -0.5f,  0.5f,  0.5f,  0.0f,  0.0f, 1.0f,   0.0f, 1.0f,
-        -0.5f, -0.5f,  0.5f,  0.0f,  0.0f, 1.0f,   0.0f, 0.0f,
+        -0.5f, -0.5f,  0.5f,
+         0.5f, -0.5f,  0.5f,
+         0.5f,  0.5f,  0.5f,
+         0.5f,  0.5f,  0.5f,
+        -0.5f,  0.5f,  0.5f,
+        -0.5f, -0.5f,  0.5f,
 
-        -0.5f,  0.5f,  0.5f, -1.0f,  0.0f,  0.0f,  1.0f, 0.0f,
-        -0.5f,  0.5f, -0.5f, -1.0f,  0.0f,  0.0f,  1.0f, 1.0f,
-        -0.5f, -0.5f, -0.5f, -1.0f,  0.0f,  0.0f,  0.0f, 1.0f,
-        -0.5f, -0.5f, -0.5f, -1.0f,  0.0f,  0.0f,  0.0f, 1.0f,
-        -0.5f, -0.5f,  0.5f, -1.0f,  0.0f,  0.0f,  0.0f, 0.0f,
-        -0.5f,  0.5f,  0.5f, -1.0f,  0.0f,  0.0f,  1.0f, 0.0f,
+        -0.5f,  0.5f,  0.5f,
+        -0.5f,  0.5f, -0.5f,
+        -0.5f, -0.5f, -0.5f,
+        -0.5f, -0.5f, -0.5f,
+        -0.5f, -0.5f,  0.5f,
+        -0.5f,  0.5f,  0.5f,
 
-         0.5f,  0.5f,  0.5f,  1.0f,  0.0f,  0.0f,  1.0f, 0.0f,
-         0.5f,  0.5f, -0.5f,  1.0f,  0.0f,  0.0f,  1.0f, 1.0f,
-         0.5f, -0.5f, -0.5f,  1.0f,  0.0f,  0.0f,  0.0f, 1.0f,
-         0.5f, -0.5f, -0.5f,  1.0f,  0.0f,  0.0f,  0.0f, 1.0f,
-         0.5f, -0.5f,  0.5f,  1.0f,  0.0f,  0.0f,  0.0f, 0.0f,
-         0.5f,  0.5f,  0.5f,  1.0f,  0.0f,  0.0f,  1.0f, 0.0f,
+         0.5f,  0.5f,  0.5f,
+         0.5f,  0.5f, -0.5f,
+         0.5f, -0.5f, -0.5f,
+         0.5f, -0.5f, -0.5f,
+         0.5f, -0.5f,  0.5f,
+         0.5f,  0.5f,  0.5f,
 
-        -0.5f, -0.5f, -0.5f,  0.0f, -1.0f,  0.0f,  0.0f, 1.0f,
-         0.5f, -0.5f, -0.5f,  0.0f, -1.0f,  0.0f,  1.0f, 1.0f,
-         0.5f, -0.5f,  0.5f,  0.0f, -1.0f,  0.0f,  1.0f, 0.0f,
-         0.5f, -0.5f,  0.5f,  0.0f, -1.0f,  0.0f,  1.0f, 0.0f,
-        -0.5f, -0.5f,  0.5f,  0.0f, -1.0f,  0.0f,  0.0f, 0.0f,
-        -0.5f, -0.5f, -0.5f,  0.0f, -1.0f,  0.0f,  0.0f, 1.0f,
+        -0.5f, -0.5f, -0.5f,
+         0.5f, -0.5f, -0.5f,
+         0.5f, -0.5f,  0.5f,
+         0.5f, -0.5f,  0.5f,
+        -0.5f, -0.5f,  0.5f,
+        -0.5f, -0.5f, -0.5f,
 
-        -0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f,  0.0f, 1.0f,
-         0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f,  1.0f, 1.0f,
-         0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f,  1.0f, 0.0f,
-         0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f,  1.0f, 0.0f,
-        -0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f,  0.0f, 0.0f,
-        -0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f,  0.0f, 1.0f
+        -0.5f,  0.5f, -0.5f,
+         0.5f,  0.5f, -0.5f,
+         0.5f,  0.5f,  0.5f,
+         0.5f,  0.5f,  0.5f,
+        -0.5f,  0.5f,  0.5f,
+        -0.5f,  0.5f, -0.5f
     };
 
-    m_Cube = std::make_unique<render::Mesh>(vertices3d, sizeof(vertices3d));
-    m_LightSource = std::make_unique<render::Mesh>(vertices3d, sizeof(vertices3d));
+    std::vector<float> normals = {
+        0.0f,  0.0f, -1.0f,
+        0.0f,  0.0f, -1.0f,
+        0.0f,  0.0f, -1.0f,
+        0.0f,  0.0f, -1.0f,
+        0.0f,  0.0f, -1.0f,
+        0.0f,  0.0f, -1.0f,
+
+        0.0f,  0.0f, 1.0f,
+        0.0f,  0.0f, 1.0f,
+        0.0f,  0.0f, 1.0f,
+        0.0f,  0.0f, 1.0f,
+        0.0f,  0.0f, 1.0f,
+        0.0f,  0.0f, 1.0f,
+
+        -1.0f,  0.0f,  0.0f,
+        -1.0f,  0.0f,  0.0f,
+        -1.0f,  0.0f,  0.0f,
+        -1.0f,  0.0f,  0.0f,
+        -1.0f,  0.0f,  0.0f,
+        -1.0f,  0.0f,  0.0f,
+
+         1.0f,  0.0f,  0.0f,
+         1.0f,  0.0f,  0.0f,
+         1.0f,  0.0f,  0.0f,
+         1.0f,  0.0f,  0.0f,
+         1.0f,  0.0f,  0.0f,
+         1.0f,  0.0f,  0.0f,
+
+         0.0f, -1.0f,  0.0f,
+         0.0f, -1.0f,  0.0f,
+         0.0f, -1.0f,  0.0f,
+         0.0f, -1.0f,  0.0f,
+         0.0f, -1.0f,  0.0f,
+         0.0f, -1.0f,  0.0f,
+
+         0.0f,  1.0f,  0.0f,
+         0.0f,  1.0f,  0.0f, 
+         0.0f,  1.0f,  0.0f,
+         0.0f,  1.0f,  0.0f,
+         0.0f,  1.0f,  0.0f,
+         0.0f,  1.0f,  0.0f
+    };
+
+    std::vector<float> texCoords = {
+        0.0f,  0.0f,
+        1.0f,  0.0f,
+        1.0f,  1.0f,
+        1.0f,  1.0f,
+        0.0f,  1.0f,
+        0.0f,  0.0f,
+
+        0.0f, 0.0f,
+        1.0f, 0.0f,
+        1.0f, 1.0f,
+        1.0f, 1.0f,
+        0.0f, 1.0f,
+        0.0f, 0.0f,
+
+        1.0f, 0.0f,
+        1.0f, 1.0f,
+        0.0f, 1.0f,
+        0.0f, 1.0f,
+        0.0f, 0.0f,
+        1.0f, 0.0f,
+
+        1.0f, 0.0f,
+        1.0f, 1.0f,
+        0.0f, 1.0f,
+        0.0f, 1.0f,
+        0.0f, 0.0f,
+        1.0f, 0.0f,
+
+        0.0f, 1.0f,
+        1.0f, 1.0f,
+        1.0f, 0.0f,
+        1.0f, 0.0f,
+        0.0f, 0.0f,
+        0.0f, 1.0f,
+
+        0.0f, 1.0f,
+        1.0f, 1.0f,
+        1.0f, 0.0f,
+        1.0f, 0.0f,
+        0.0f, 0.0f,
+        0.0f, 1.0f
+    };
+
+	//Create the textures
+    std::vector<render::Texture> textures;
+    textures.emplace_back("container2.png", render::TextureType::Diffuse);
+    textures.emplace_back("container2_specular.png", render::TextureType::Specular);
+
+
+    std::vector<render::Vertex> vertices;
+    vertices.reserve(vertices3d.size() / 3);
+	std::vector<unsigned int> indices {};
+    for (std::size_t i = 0; i < vertices3d.size() / 3; ++i)
+    {
+        vertices.push_back({
+            glm::vec3(vertices3d[i * 3], vertices3d[i * 3 + 1], vertices3d[i * 3 + 2]),
+            glm::vec3(normals[i * 3], normals[i * 3 + 1], normals[i * 3 + 2]),
+            glm::vec2(texCoords[i * 2], texCoords[i * 2 + 1])
+        });
+    }
+
+    m_Cube = std::make_unique<render::Mesh>(vertices, indices, std::move(textures));
+	//no texture needed here
+    m_LightSource = std::make_unique<render::Mesh>(vertices, indices, std::vector<render::Texture>{});
 
     m_LightingShader = std::make_unique<render::Shader>(
         shaderDirectory / "vertexShaderforLight.vert",
@@ -85,15 +195,9 @@ void CubeScene::Load()
         shaderDirectory / "fragmentShaderforLightSource.frag"
     );
 
-    m_MetallicContainer = std::make_unique<render::Texture>("container2.png");
-    m_MetallicContainerSpecular = std::make_unique<render::Texture>("container2_specular.png");
-
-    m_MetallicContainer->bind(0);
-    m_MetallicContainerSpecular->bind(1);
-
     m_LightingShader->use();
-    m_LightingShader->setInt("material.diffuse", 0);
-    m_LightingShader->setInt("material.specular", 1);
+    //m_LightingShader->setInt("material.diffuse", 0);
+    //m_LightingShader->setInt("material.specular", 1);
 }
 
 void CubeScene::Update(float deltaTime)
@@ -197,7 +301,7 @@ void CubeScene::Render()
         modelMatrix = glm::rotate(modelMatrix, glm::radians(angle), glm::vec3(1.0f, 0.3f, 0.5f));
         m_LightingShader->setMat4("model", modelMatrix);
 
-        m_Cube->draw();
+        m_Cube->draw(*m_LightingShader);
     }
 
     for (int i = 0; i < 3; i++)
@@ -211,7 +315,7 @@ void CubeScene::Render()
         m_LightSourceShader->setMat4("projection", projectionMatrix);
         m_LightSourceShader->setVec3("lightColor", m_LightColors[i]);
 
-        m_LightSource->draw();
+        m_LightSource->draw(*m_LightSourceShader);
     }
 
     const ImGuiIO& io = ImGui::GetIO();
@@ -233,8 +337,6 @@ void CubeScene::Render()
 
 void CubeScene::Unload()
 {
-    m_MetallicContainerSpecular.reset();
-    m_MetallicContainer.reset();
     m_LightSourceShader.reset();
     m_LightingShader.reset();
     m_LightSource.reset();

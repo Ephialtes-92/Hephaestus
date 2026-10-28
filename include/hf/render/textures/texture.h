@@ -7,32 +7,41 @@
 
 namespace hf::render
 {
-class Texture
-{
-public:
-    explicit Texture(std::string textureName);
-    ~Texture();
 
-    Texture(const Texture &) = delete;
-    Texture& operator=(const Texture&) = delete;
+    enum class TextureType
+    {
+        Diffuse = 0,
+        Specular
+    };
 
-    //Move and copy constructors
-    Texture(Texture&& other) noexcept;
-    Texture& operator=(Texture&& other) noexcept;
+    class Texture
+    {
+    public:
+        explicit Texture(std::string textureName, TextureType type = TextureType::Diffuse);
+        ~Texture();
 
-    void bind(unsigned int slot = 0) const;
-    void unbind() const;
+        Texture(const Texture &) = delete;
+        Texture& operator=(const Texture&) = delete;
 
-    unsigned int getId() { return m_ID; }
+        //Move and copy constructors
+        Texture(Texture&& other) noexcept;
+        Texture& operator=(Texture&& other) noexcept;
+
+        void bind(unsigned int slot = 0) const;
+        void unbind() const;
+
+        unsigned int getId() { return m_ID; }
+        TextureType getType() { return m_Type; }
 
 
 
-private:
-    unsigned int m_ID = 0;
+    private:
+        unsigned int m_ID = 0;
+        TextureType m_Type = TextureType::Diffuse;
 
-    int m_Width = 0;
-    int m_Height = 0;
-    int m_Channels = 0;
+        int m_Width = 0;
+        int m_Height = 0;
+        int m_Channels = 0;
 
-};
+    };
 }

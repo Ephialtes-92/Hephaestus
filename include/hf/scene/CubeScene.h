@@ -47,8 +47,6 @@ private:
 
     std::unique_ptr<render::Mesh> m_Cube;
     std::unique_ptr<render::Mesh> m_LightSource;
-    std::unique_ptr<render::Texture> m_MetallicContainer;
-    std::unique_ptr<render::Texture> m_MetallicContainerSpecular;
     std::unique_ptr<render::Shader> m_LightingShader;
     std::unique_ptr<render::Shader> m_LightSourceShader;
 
