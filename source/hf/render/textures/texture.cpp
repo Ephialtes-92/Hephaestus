@@ -7,7 +7,8 @@ namespace hf::render
 {
 std::filesystem::path textureDirectory = TEXTURES_DIR;
 
-Texture::Texture(std::string textureName)
+Texture::Texture(std::string textureName, TextureType type)
+    : m_Type(type)
 {
     stbi_set_flip_vertically_on_load(true);
 
