@@ -101,6 +101,12 @@ target_link_libraries(Hephaestus PRIVATE
     "${LIBRARY_DIR}/glfw3.lib"
 )
 
+add_custom_command(TARGET Hephaestus POST_BUILD
+    COMMAND ${CMAKE_COMMAND} -E copy_if_different
+        "$<TARGET_FILE:assimp::assimp>"
+        "$<TARGET_FILE_DIR:Hephaestus>"
+)
+
 # Additional Windows system libraries used by GLFW.
 if(WIN32)
     target_link_libraries(Hephaestus PRIVATE

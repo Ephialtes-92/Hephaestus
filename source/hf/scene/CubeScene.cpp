@@ -3,6 +3,7 @@
 #include <hf/scene/CubeScene.h>
 
 #include <filesystem>
+#include <memory>
 #include <utility>
 #include <vector>
 
@@ -165,9 +166,9 @@ void CubeScene::Load()
     };
 
 	//Create the textures
-    std::vector<render::Texture> textures;
-    textures.emplace_back("container2.png", render::TextureType::Diffuse);
-    textures.emplace_back("container2_specular.png", render::TextureType::Specular);
+    std::vector<std::shared_ptr<render::Texture>> textures;
+    textures.push_back(std::make_shared<render::Texture>("container2.png", "", render::TextureType::Diffuse));
+    textures.push_back(std::make_shared<render::Texture>("container2_specular.png", "", render::TextureType::Specular));
 
 
     std::vector<render::Vertex> vertices;
@@ -184,7 +185,7 @@ void CubeScene::Load()
 
     m_Cube = std::make_unique<render::Mesh>(vertices, indices, std::move(textures));
 	//no texture needed here
-    m_LightSource = std::make_unique<render::Mesh>(vertices, indices, std::vector<render::Texture>{});
+    m_LightSource = std::make_unique<render::Mesh>(vertices, indices, std::vector<std::shared_ptr<render::Texture>>{});
 
     m_LightingShader = std::make_unique<render::Shader>(
         shaderDirectory / "vertexShaderforLight.vert",

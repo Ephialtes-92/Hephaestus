@@ -2,18 +2,29 @@
 #include <ThirdParty/stb/stb_image.h>
 #include <stdexcept>
 #include <config.h>
+#include <filesystem>
+#include <ThirdParty/glad/glad.h>
 
 namespace hf::render
 {
-std::filesystem::path textureDirectory = TEXTURES_DIR;
+std::filesystem::path fixedTextureDirectory = TEXTURES_DIR;
 
-Texture::Texture(std::string textureName, TextureType type)
-    : m_Type(type)
+Texture::Texture(std::string textureName, std::string textureDirecory, TextureType type)
+    : m_Type(type),
+    m_Name(textureName)
 {
     stbi_set_flip_vertically_on_load(true);
 
     //Load the image
-    std::filesystem::path texturePath = textureDirectory / textureName;
+    std::filesystem::path texturePath;
+    if (textureDirecory.empty())
+    {
+        texturePath = fixedTextureDirectory / textureName;
+    }
+    else
+    {
+        texturePath = std::filesystem::path(textureDirecory) / textureName;
+    }
     unsigned char* data = stbi_load(texturePath.string().c_str(), &m_Width, &m_Height, &m_Channels, STBI_rgb_alpha);
     if (!data)
     {

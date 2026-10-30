@@ -1,9 +1,6 @@
 #pragma once
 
 #include <string>
-#include <filesystem>
-
-#include <ThirdParty/glad/glad.h>
 
 namespace hf::render
 {
@@ -17,7 +14,7 @@ namespace hf::render
     class Texture
     {
     public:
-        explicit Texture(std::string textureName, TextureType type = TextureType::Diffuse);
+        explicit Texture(std::string textureName, std::string textureDirecory = "", TextureType type = TextureType::Diffuse);
         ~Texture();
 
         Texture(const Texture &) = delete;
@@ -38,6 +35,8 @@ namespace hf::render
     private:
         unsigned int m_ID = 0;
         TextureType m_Type = TextureType::Diffuse;
+		//Textures should have unique name within a model, so we can use the name to identify the texture
+        std::string m_Name;
 
         int m_Width = 0;
         int m_Height = 0;

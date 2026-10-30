@@ -1,8 +1,9 @@
 #include <hf/render/geometry/mesh.h>
+#include <utility>
 
 namespace hf::render
 {
-Mesh::Mesh(std::vector <Vertex> vertices, std::vector<unsigned int> indices, std::vector<hf::render::Texture> textures)
+Mesh::Mesh(std::vector <Vertex> vertices, std::vector<unsigned int> indices, std::vector<std::shared_ptr<hf::render::Texture>> textures)
     : m_Vertices(std::move(vertices)), m_Indices(std::move(indices)), m_Textures(std::move(textures))
 {
     setupMesh();
@@ -13,6 +14,35 @@ Mesh::~Mesh()
 	glDeleteBuffers(1, &m_EBO);
 	glDeleteBuffers(1, &m_VBO);
 	glDeleteBuffers(1, &m_VAO);
+}
+
+Mesh::Mesh(Mesh&& other) noexcept
+	: m_Vertices(std::move(other.m_Vertices)),
+	  m_Indices(std::move(other.m_Indices)),
+	  m_Textures(std::move(other.m_Textures)),
+	  m_VAO(std::exchange(other.m_VAO, 0)),
+	  m_VBO(std::exchange(other.m_VBO, 0)),
+	  m_EBO(std::exchange(other.m_EBO, 0)),
+	  m_IndexCount(std::exchange(other.m_IndexCount, 0))
+{
+}
+
+Mesh& Mesh::operator=(Mesh&& other) noexcept
+{
+	if (this != &other)
+	{
+		glDeleteBuffers(1, &m_EBO);
+		glDeleteBuffers(1, &m_VBO);
+		glDeleteBuffers(1, &m_VAO);
+		m_Vertices = std::move(other.m_Vertices);
+		m_Indices = std::move(other.m_Indices);
+		m_Textures = std::move(other.m_Textures);
+		m_VAO = std::exchange(other.m_VAO, 0);
+		m_VBO = std::exchange(other.m_VBO, 0);
+		m_EBO = std::exchange(other.m_EBO, 0);
+		m_IndexCount = std::exchange(other.m_IndexCount, 0);
+	}
+	return *this;
 }
 
 void Mesh::setupMesh()
@@ -57,6 +87,7 @@ void Mesh::setupMesh()
 
 void Mesh::draw(hf::render::Shader& shader)
 {
+	//Bind the textures
     //only works for 1 diffuse and 1 specular texture for now
 	unsigned int diffuseCount = 1;
 	unsigned int specularCount = 1;
@@ -66,7 +97,7 @@ void Mesh::draw(hf::render::Shader& shader)
         std::string name;
         //glActiveTexture(GL_TEXTURE0 + i); 
 
-		auto type = m_Textures[i].getType();
+		auto type = m_Textures[i]->getType();
 		switch (type)
 		{		
 		case hf::render::TextureType::Diffuse:
@@ -83,7 +114,7 @@ void Mesh::draw(hf::render::Shader& shader)
 		}
 
         shader.setInt("material." + name /*+ number*/, i);
-		m_Textures[i].bind(i);
+		m_Textures[i]->bind(i);
     }
 
     //Draw the mesh

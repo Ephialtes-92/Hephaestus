@@ -3,6 +3,7 @@
 #include <hf/render/textures/texture.h>
 #include <hf/render/shaders/shader.h>
 #include <ThirdParty/glad/glad.h>
+#include <memory>
 #include <vector>
 
 namespace hf::render
@@ -17,14 +18,16 @@ namespace hf::render
 
     class Mesh {
     public:
-        Mesh(std::vector <Vertex> vertices, std::vector<unsigned int> indices, std::vector<hf::render::Texture> textures);
+        Mesh(std::vector <Vertex> vertices, std::vector<unsigned int> indices, std::vector<std::shared_ptr<hf::render::Texture>> textures);
         ~Mesh();
 
         // GPU resource ownership should not be copied accidentally.
         Mesh(const Mesh&) = delete;
         Mesh& operator=(const Mesh&) = delete;
+        Mesh(Mesh&& other) noexcept;
+        Mesh& operator=(Mesh&& other) noexcept;
 
-        //Move mesh seetup here, what would be the most efficient way to pass the data? references or std::move? I think std::move is the best option here, as we don't need the data after the mesh is created.
+        //Move mesh setup here, what would be the most efficient way to pass the data? references or std::move? I think std::move is the best option here, as we don't need the data after the mesh is created.
         void setupMesh();
         //Should we be passing the shader here?
         void draw(hf::render::Shader& shader);
@@ -32,7 +35,7 @@ namespace hf::render
         //Mesh data
         std::vector<Vertex> m_Vertices;
         std::vector<unsigned int> m_Indices;
-        std::vector<hf::render::Texture> m_Textures;
+        std::vector<std::shared_ptr<hf::render::Texture>> m_Textures;
 
         //render data
         unsigned int m_VAO = 0;
