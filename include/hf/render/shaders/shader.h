@@ -1,13 +1,18 @@
 #pragma once
 #include <filesystem>
+#include <string>
+#include <unordered_set>
 #include <ThirdParty/glm/glm.hpp>
 
 namespace hf::render
 {
 class Shader
 {
-    unsigned int m_ProgramID;
+    unsigned int m_ProgramID = 0;
     bool m_Initialized = false;
+    mutable std::unordered_set<std::string> m_WarnedUniforms;
+
+    int uniformLocation(const std::string& name) const;
 
 public:
     Shader(const std::filesystem::path& vertexPath, const std::filesystem::path& fragmentPath);
