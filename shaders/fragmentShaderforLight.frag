@@ -53,8 +53,9 @@ struct SpotLight {
 };
 
 uniform Material material;
-#define NR_POINT_LIGHTS 4  
-uniform PointLight pointLights[NR_POINT_LIGHTS];
+#define MAX_POINT_LIGHTS 4  
+uniform int pointLightCount;
+uniform PointLight pointLights[MAX_POINT_LIGHTS];
 uniform DirectionalLight directionalLight;
 uniform SpotLight spotLight;
 
@@ -73,7 +74,7 @@ void main()
     vec3 result = CalculateDirectionalLight(directionalLight, norm, viewDir);
 
     // Phase 2: Point lights
-    for(int i = 0; i < NR_POINT_LIGHTS; i++)
+    for(int i = 0; i < pointLightCount; i++)
     {
         result += CalculatePointLight(pointLights[i], norm, FragPos, viewDir);    
     }  

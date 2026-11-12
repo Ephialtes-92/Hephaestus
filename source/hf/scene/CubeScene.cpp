@@ -235,13 +235,14 @@ void CubeScene::Render()
         diffuseColor[3] * glm::vec3(0.0f)
     };
 
-    m_LightingShader->setVec3("lightColor", glm::vec3(1.0f));
+    //m_LightingShader->setVec3("lightColor", glm::vec3(1.0f));
 
     m_LightingShader->setFloat3("directionalLight.direction", -0.2f, -1.0f, -0.3f);
     m_LightingShader->setVec3("directionalLight.ambient", glm::vec3(0.0f));
     m_LightingShader->setVec3("directionalLight.diffuse", glm::vec3(1.0f));
     m_LightingShader->setVec3("directionalLight.specular", glm::vec3(1.0f));
 
+	m_LightingShader->setInt("pointLightCount", 4);
     m_LightingShader->setVec3("pointLights[0].position", m_PointLightPositions[0]);
     m_LightingShader->setVec3("pointLights[0].ambient", ambientColor[0]);
     m_LightingShader->setVec3("pointLights[0].diffuse", diffuseColor[0]);

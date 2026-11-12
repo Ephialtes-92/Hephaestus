@@ -19,6 +19,7 @@ set(LIBRARY_DIR "${CMAKE_CURRENT_SOURCE_DIR}/libraries")
 # Asset directories (relative to source root)
 set(SHADERS_DIR "${CMAKE_CURRENT_SOURCE_DIR}/shaders")
 set(TEXTURES_DIR "${CMAKE_CURRENT_SOURCE_DIR}/data/textures")
+set(MODELS_DIR "${CMAKE_CURRENT_SOURCE_DIR}/data/models")
 
 # Automatically discover C/C++ source files.
 file(GLOB_RECURSE PROJECT_SOURCES

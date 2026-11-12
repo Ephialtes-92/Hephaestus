@@ -4,7 +4,7 @@
 #include <assimp/material.h>
 #include <hf/render/shaders/shader.h>
 #include <hf/render/geometry/mesh.h>
-#include <hf/render//textures/texture.h>
+#include <hf/render/textures/texture.h>
 #include <memory>
 #include <string>
 #include <unordered_map>
