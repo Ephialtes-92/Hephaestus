@@ -39,6 +39,9 @@ Texture::Texture(std::string textureName, std::string textureDirecory, TextureTy
     // Texture Wrapping
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+    //glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+    //glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+
 
     //Teture filtering
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
@@ -68,6 +71,26 @@ void Texture::bind(unsigned int slot) const
 void Texture::unbind() const
 {
     glBindTexture(GL_TEXTURE_2D, 0);
+}
+
+void Texture::setWrapping(GLenum wrapS, GLenum wrapT)
+{
+    GLint previousTexture = 0;
+    glGetIntegerv(GL_TEXTURE_BINDING_2D, &previousTexture);
+    glBindTexture(GL_TEXTURE_2D, m_ID);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, static_cast<GLint>(wrapS));
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, static_cast<GLint>(wrapT));
+    glBindTexture(GL_TEXTURE_2D, static_cast<GLuint>(previousTexture));
+}
+
+void Texture::setFiltering(GLenum minFilter, GLenum magFilter)
+{
+    GLint previousTexture = 0;
+    glGetIntegerv(GL_TEXTURE_BINDING_2D, &previousTexture);
+    glBindTexture(GL_TEXTURE_2D, m_ID);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, static_cast<GLint>(minFilter));
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, static_cast<GLint>(magFilter));
+    glBindTexture(GL_TEXTURE_2D, static_cast<GLuint>(previousTexture));
 }
 
 //Take over ownership of the other texture basically

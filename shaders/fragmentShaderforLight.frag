@@ -57,6 +57,7 @@ uniform Material material;
 uniform int pointLightCount;
 uniform PointLight pointLights[MAX_POINT_LIGHTS];
 uniform DirectionalLight directionalLight;
+uniform bool spotlightEnabled;
 uniform SpotLight spotLight;
 
 //Function prototypes
@@ -80,7 +81,10 @@ void main()
     }  
 
     // Phase 3: Spot light
-    result += CalculateSpotLight(spotLight, norm, FragPos, viewDir);
+    if(spotlightEnabled)
+    {
+        result += CalculateSpotLight(spotLight, norm, FragPos, viewDir);
+    }
 
     FragColor = vec4(result, 1.0);
 } 

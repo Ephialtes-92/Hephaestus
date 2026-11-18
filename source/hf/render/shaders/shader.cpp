@@ -143,9 +143,12 @@ int Shader::uniformLocation(const std::string& name) const
     return location;
 }
 
-//void Shader::setBool(const std::string& name, bool value) const
-//{
-//}
+void Shader::setBool(const std::string& name, bool value) const
+{
+    const int location = uniformLocation(name);
+    if (location != -1)
+        glUniform1i(location, value ? 1 : 0);
+}
 
 void Shader::setInt(const std::string& name, int i)
 {

@@ -16,6 +16,7 @@
 
 #include <hf/scene/IScene.h>
 #include <hf/scene/CubeScene.h>
+#include <hf/scene/CubeSceneGrey.h>
 #include <hf/scene/MainScene.h>
 #include <hf/scene/SceneManager.h>
 
@@ -72,12 +73,12 @@ int main()
     ImGui_ImplOpenGL3_Init("#version 460");
 
     hf::scene::SceneManager sceneManager;
-    //auto cubeScene = std::make_unique<hf::scene::CubeScene>(window);
+    auto cubeScene = std::make_unique<hf::scene::CubeScene>(window);
 	auto mainScene = std::make_unique<hf::scene::MainScene>(window);
-    //activeScene = cubeScene.get();
-	activeScene = mainScene.get();
-    //sceneManager.ChangeScene(std::move(cubeScene));
-	sceneManager.ChangeScene(std::move(mainScene));
+	auto cubeSceneGrey = std::make_unique<hf::scene::CubeSceneGrey>(window);
+
+	activeScene = cubeSceneGrey.get();
+	sceneManager.ChangeScene(std::move(cubeSceneGrey));
 
 
     float lastFrame = 0.0f;

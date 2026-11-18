@@ -1,5 +1,6 @@
 #pragma once
 
+#include <ThirdParty/glad/glad.h>
 #include <string>
 
 namespace hf::render
@@ -26,6 +27,8 @@ namespace hf::render
 
         void bind(unsigned int slot = 0) const;
         void unbind() const;
+        void setWrapping(GLenum wrapS, GLenum wrapT);
+        void setFiltering(GLenum minFilter, GLenum magFilter);
 
         unsigned int getId() { return m_ID; }
         TextureType getType() { return m_Type; }

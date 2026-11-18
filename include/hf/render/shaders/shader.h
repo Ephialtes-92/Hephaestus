@@ -20,6 +20,7 @@ public:
     unsigned int getProgramID() { return m_ProgramID; }
 
     //Utility functions
+	void setBool(const std::string& name, bool b) const;
     void setInt(const std::string& name, int i);
     void setFloat(const std::string& name, float f) const;
     void setFloat3(const std::string& name, float x, float y, float z) const;
